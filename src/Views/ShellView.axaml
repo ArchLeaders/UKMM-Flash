@@ -1,0 +1,147 @@
+<Window x:Class="UkmmFlash.Views.ShellView"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="using:FluentAvalonia.UI.Controls"
+        Title="UKMM Flash"
+        Width="800"
+        Height="450"
+        MinWidth="650"
+        MinHeight="450"
+        d:DesignHeight="450"
+        d:DesignWidth="800"
+        Icon="/Assets/icon.ico"
+        mc:Ignorable="d">
+    <Grid Margin="15" ColumnDefinitions="Auto,*">
+        <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="*,Auto">
+            <StackPanel Spacing="10">
+                <Button HorizontalAlignment="Stretch"
+                        Command="{Binding CreateMod}"
+                        Content="Create Mod"
+                        IsEnabled="{Binding !IsLoading}" />
+                <Button HorizontalAlignment="Stretch"
+                        Command="{Binding OpenMod}"
+                        Content="Open Mod"
+                        IsEnabled="{Binding !IsLoading}" />
+                <Border Height="1" Background="{DynamicResource ControlStrokeColorOnAccentDefault}" />
+                <Button HorizontalAlignment="Stretch"
+                        Command="{Binding Decompile}"
+                        Content="Decompile"
+                        IsEnabled="{Binding !IsLoading}" />
+                <Button HorizontalAlignment="Stretch"
+                        Command="{Binding Compile}"
+                        Content="Compile"
+                        IsEnabled="{Binding !IsLoading}" />
+                <Border Height="1" Background="{DynamicResource ControlStrokeColorOnAccentDefault}" />
+                <Button HorizontalAlignment="Stretch"
+                        Command="{Binding Deploy}"
+                        Content="Package &amp; Deploy"
+                        IsEnabled="{Binding !IsLoading}" />
+                <Border Height="1" Background="{DynamicResource ControlStrokeColorOnAccentDefault}" />
+                <Button HorizontalAlignment="Stretch"
+                        Command="{Binding FetchFile}"
+                        Content="Fetch File"
+                        IsEnabled="{Binding !IsLoading}" />
+            </StackPanel>
+            <StackPanel Grid.Row="1" Spacing="10">
+                <Button HorizontalAlignment="Stretch"
+                        Command="{Binding OpenSettings}"
+                        Content="Settings"
+                        IsEnabled="{Binding !IsLoading}" />
+            </StackPanel>
+            <Border Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Width="1"
+                    Margin="10,0"
+                    Background="{DynamicResource ControlStrokeColorOnAccentDefault}" />
+        </Grid>
+        <Grid Grid.Column="1" RowDefinitions="Auto,Auto,*,Auto">
+            <StackPanel Margin="0,0,0,15">
+                <TextBlock Margin="0,0,0,1"
+                           FontSize="19"
+                           FontWeight="Medium"
+                           Text="{Binding Name}" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Light"
+                               Foreground="{DynamicResource SystemFillColorAttentionBrush}"
+                               Opacity="0.6"
+                               Text="{Binding Status}" />
+                    <TextBlock FontWeight="Light"
+                               Opacity="0.6"
+                               Text=" | " />
+                    <TextBlock FontWeight="Light"
+                               Opacity="0.6"
+                               Text="{Binding Path}" />
+                </StackPanel>
+                <ProgressBar Height="1"
+                             Margin="0,5,0,0"
+                             Background="Transparent"
+                             IsIndeterminate="{Binding IsLoading}" />
+            </StackPanel>
+            <TextBlock Grid.Row="1"
+                       Margin="0,0,0,15"
+                       FontSize="15"
+                       Text="Compiler Rules:" />
+            <ListBox Grid.Row="2"
+                     Items="{Binding Rules}"
+                     KeyDown="RuleList_KeyDown"
+                     SelectedItem="{Binding SelectedRule}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="10,5"
+                                Background="Transparent"
+                                DoubleTapped="RuleItem_DoubleTapped"
+                                ToolTip.Tip="{Binding Pattern}">
+                            <StackPanel>
+                                <TextBlock HorizontalAlignment="Left"
+                                           FontFamily="Consolas"
+                                           FontSize="11"
+                                           Text="{Binding Pattern}" />
+                                <TextBlock HorizontalAlignment="Left"
+                                           FontFamily="Consolas"
+                                           FontSize="9"
+                                           Foreground="{DynamicResource SystemFillColorAttentionBrush}"
+                                           Text="{Binding Action.Name}" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.Styles>
+                    <Style Selector="ListBoxItem">
+                        <Setter Property="MinHeight" Value="0" />
+                        <Setter Property="CornerRadius" Value="3" />
+                        <Setter Property="Margin" Value="0" />
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Opacity" Value="0.6" />
+                    </Style>
+                </ListBox.Styles>
+            </ListBox>
+            <StackPanel Grid.Row="3"
+                        Orientation="Horizontal"
+                        Spacing="10">
+                <Button Command="{Binding NewRule}"
+                        Content="New Rule"
+                        IsEnabled="{Binding !IsLoading}" />
+                <Border Width="1" Background="{DynamicResource ControlStrokeColorOnAccentDefault}" />
+                <Button Command="{Binding EditRule}"
+                        Content="Edit Rule"
+                        IsEnabled="{Binding !IsLoading}" />
+                <Button Command="{Binding RemoveRule}"
+                        Content="Remove Rule"
+                        IsEnabled="{Binding !IsLoading}" />
+                <Border Width="1" Background="{DynamicResource ControlStrokeColorOnAccentDefault}" />
+                <Button Command="{Binding ClearRules}"
+                        Content="Clear Rules"
+                        IsEnabled="{Binding !IsLoading}" />
+                <Border Width="1" Background="{DynamicResource ControlStrokeColorOnAccentDefault}" />
+                <Button Command="{Binding MoveRuleUp}"
+                        Content="▲"
+                        IsEnabled="{Binding !IsLoading}" />
+                <Button Command="{Binding MoveRuleDown}"
+                        Content="▼"
+                        IsEnabled="{Binding !IsLoading}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
