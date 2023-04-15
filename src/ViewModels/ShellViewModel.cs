@@ -112,9 +112,50 @@ public class ShellViewModel : ReactiveObject
 
     public async Task Deploy()
     {
-        SetStatus("Deploying");
+        SetStatus("Setting Game Mode");
+        Meta.SetNextVersion(Meta.GetInfoFile(ModPath, Name, Platform.WiiU));
 
-        await Task.Delay(3000);
+        await Process.Start(App.Config.UkmmPath, $"""
+            mode "Wii U"
+            """).WaitForExitAsync();
+
+        SetStatus("Uninstalling Old Version");
+        await Process.Start(App.Config.UkmmPath, $"""
+            uninstall 0
+            """).WaitForExitAsync();
+
+        SetStatus("Installing & Deploying");
+        await Process.Start(App.Config.UkmmPath, $"""
+            install "{Path.Combine(ModPath, "build")}" "{Name}" --deploy
+            """).WaitForExitAsync();
+
+        SetStatus("Ready");
+    }
+
+    public async Task Package()
+    {
+        SetStatus("Updating Version");
+        string meta = Meta.GetMetaFile(ModPath, Name, Platform.WiiU);
+        string verion = Meta.SetNextVersion(meta);
+
+        ContentDialog dlg = new() {
+            Content = new TextBox {
+                Watermark = "Version"
+            },
+            DefaultButton = ContentDialogButton.Primary,
+            PrimaryButtonText = "OK",
+            SecondaryButtonText = "Cancel",
+            Title = "Package Version"
+        };
+
+        if (await dlg.ShowAsync() == ContentDialogResult.Primary) {
+            SetStatus("Packaging");
+            await Process.Start(App.Config.UkmmPath, $"""
+                package "{Path.Combine(ModPath, "build")}" "{Path.Combine(ModPath, $"{Name}-{verion}.zip")}" "{meta}"
+                """).WaitForExitAsync();
+        }
+
+
         SetStatus("Ready");
     }
 

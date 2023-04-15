@@ -36,7 +36,11 @@
                 <Border Height="1" Background="{DynamicResource ControlStrokeColorOnAccentDefault}" />
                 <Button HorizontalAlignment="Stretch"
                         Command="{Binding Deploy}"
-                        Content="Package &amp; Deploy"
+                        Content="Install &amp; Deploy"
+                        IsEnabled="{Binding !IsLoading}" />
+                <Button HorizontalAlignment="Stretch"
+                        Command="{Binding Package}"
+                        Content="Package"
                         IsEnabled="{Binding !IsLoading}" />
                 <Border Height="1" Background="{DynamicResource ControlStrokeColorOnAccentDefault}" />
                 <Button HorizontalAlignment="Stretch"
@@ -72,7 +76,7 @@
                                Text=" | " />
                     <TextBlock FontWeight="Light"
                                Opacity="0.6"
-                               Text="{Binding Path}" />
+                               Text="{Binding ModPath}" />
                 </StackPanel>
                 <ProgressBar Height="1"
                              Margin="0,5,0,0"
