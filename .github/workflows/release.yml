@@ -80,6 +80,6 @@ jobs:
       - uses: Shopify/upload-to-release@v1.0.1
         name: Upload artifacts
         with:
-          name: ${{ env.proj }}-${{ github.event.release.tag_name }}${{ matrix.config.ext }}
+          name: UKMM-Flash-${{ github.event.release.tag_name }}${{ matrix.config.ext }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           path: ${{ matrix.config.name }}/${{ env.proj }}${{ matrix.config.ext }}
