@@ -86,19 +86,19 @@ public class Meta
 
     public class Info
     {
-        
+
         [JsonPropertyName("name")]
         public string Name { get; set; } = string.Empty;
-        
+
         [JsonPropertyName("image")]
         public string Image { get; set; } = string.Empty;
-        
+
         [JsonPropertyName("url")]
         public string Url { get; set; } = string.Empty;
-        
+
         [JsonPropertyName("desc")]
         public string Desc { get; set; } = string.Empty;
-        
+
         [JsonPropertyName("version")]
         public string Version { get; set; } = "1.0.0";
 
@@ -107,16 +107,16 @@ public class Meta
 
         [JsonPropertyName("depends")]
         public List<object> Depends { get; set; } = new();
-        
+
         [JsonPropertyName("showcompare")]
         public bool ShowCompare { get; set; } = false;
-        
+
         [JsonPropertyName("showconvert")]
         public bool ShowConvert { get; set; } = false;
-        
+
         [JsonPropertyName("platform")]
         public string Platform { get; set; } = "wiiu";
-        
+
         [JsonPropertyName("id")]
         public string Id { get; set; } = string.Empty;
     }

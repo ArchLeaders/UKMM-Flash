@@ -1,8 +1,6 @@
 ﻿using Avalonia.Controls;
 using FluentAvalonia.UI.Controls;
 using Microsoft.Extensions.FileSystemGlobbing;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 
@@ -61,7 +59,7 @@ public static class GameFiles
 
         foreach ((var root, var files) in fetch) {
             foreach (var _file in files) {
-                string file = _file; 
+                string file = _file;
                 if (file.StartsWith("0010") || file.StartsWith("0011") || file.StartsWith("0012")) {
                     file = Path.Combine("aoc", _file);
                 }
