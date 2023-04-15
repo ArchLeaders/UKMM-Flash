@@ -64,6 +64,12 @@ public class ShellViewModel : ReactiveObject
         ContentDialogResult result = await dlg.ShowAsync();
         if (result == ContentDialogResult.Primary && dlg.Content is TextBox tb && !string.IsNullOrEmpty(tb.Text)) {
             Name = tb.Text;
+
+            Directory.CreateDirectory(Path.Combine(ModPath, "assets"));
+            Directory.CreateDirectory(Path.Combine(ModPath, "build"));
+            Directory.CreateDirectory(Path.Combine(ModPath, "scripts"));
+
+            Meta.GetMetaFile(ModPath, Name, Platform.WiiU);
         }
     }
 
