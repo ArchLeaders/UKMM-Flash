@@ -8,7 +8,7 @@ public static class RuleSerializer
 {
     public static void Load(this ObservableCollection<Rule> rules, string path)
     {
-        path = Path.Combine(path, "rules.json");
+        path = Path.Combine(path, "compiler-rules.json");
 
         rules.Clear();
         if (File.Exists(path)) {
@@ -22,7 +22,7 @@ public static class RuleSerializer
 
     public static async Task Save(this ObservableCollection<Rule> rules, string path)
     {
-        path = Path.Combine(path, "rules.json");
+        path = Path.Combine(path, "compiler-rules.json");
 
         Dictionary<string, string> ruleset = new();
         foreach (var rule in rules) {
