@@ -69,7 +69,7 @@ jobs:
       - name: Publish UKMM Flash
         shell: bash
         run: |
-          dotnet publish src/${{ env.proj }}/${{ env.proj }}.csproj \
+          dotnet publish src/${{ env.proj }}.csproj \
           -r ${{ matrix.config.runtime }} \
           -c Release \
           --sc false \
