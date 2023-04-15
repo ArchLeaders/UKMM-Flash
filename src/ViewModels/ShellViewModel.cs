@@ -1,9 +1,9 @@
 ﻿using Avalonia.Controls;
 using FluentAvalonia.UI.Controls;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using UkmmFlash.Helpers;
 using UkmmFlash.Models;
-using UkmmFlash.Models.RuleActions;
 using UkmmFlash.Views;
 
 namespace UkmmFlash.ViewModels;
@@ -11,33 +11,22 @@ public class ShellViewModel : ReactiveObject
 {
     public static ShellViewModel Shared { get; } = new();
 
-    private string _name = "The Legend of John";
+    private string _name = Path.GetFileName(Directory.GetCurrentDirectory());
     public string Name {
         get => _name;
         set {
-            Path = System.IO.Path.Combine(App.Config.ModsPath, value.Replace(' ', '-'));
+            ModPath = Path.Combine(App.Config.ModsPath, value.Replace(' ', '-'));
             this.RaiseAndSetIfChanged(ref _name, value);
         }
     }
 
-    private string _path = string.Empty;
-    public string Path {
-        get => _path;
-        set => this.RaiseAndSetIfChanged(ref _path, value);
+    private string _modPath = Directory.GetCurrentDirectory();
+    public string ModPath {
+        get => _modPath;
+        set => this.RaiseAndSetIfChanged(ref _modPath, value);
     }
 
-    public ShellViewModel()
-    {
-        _path = System.IO.Path.Combine(App.Config.ModsPath, _name.Replace(' ', '-'));
-    }
-
-
-    private ObservableCollection<Rule> _rules = new() {
-        Rule.Create<SarcAction>("**/*.pack"),
-        Rule.Create<SarcAction>("**/*.sbactorpack"),
-        Rule.Create<BymlAction>("/build/content/Actor/ActorInfo.product.sbyml"),
-        Rule.Create<AampAction>("**/*.bxml"),
-    };
+    private ObservableCollection<Rule> _rules = new();
     public ObservableCollection<Rule> Rules {
         get => _rules;
         set => this.RaiseAndSetIfChanged(ref _rules, value);
@@ -76,8 +65,8 @@ public class ShellViewModel : ReactiveObject
     public async Task OpenMod()
     {
         BrowserDialog dialog = new(BrowserMode.OpenFolder, "Open Mod Root Folder", instanceBrowserKey: "OpenModDialog");
-        if (await dialog.ShowDialog() is string path) {
-            Path = path;
+        if (await dialog.ShowDialog() is string path && Directory.Exists(path)) {
+            Name = Path.GetFileName(path);
         }
     }
 
@@ -89,7 +78,7 @@ public class ShellViewModel : ReactiveObject
             _isDecompiled = true;
 
             foreach (var rule in Rules) {
-                await rule.Decompile(Path);
+                await Task.Run(() => rule.Decompile(ModPath));
             }
 
             SetStatus("Ready");
@@ -103,7 +92,7 @@ public class ShellViewModel : ReactiveObject
             _isDecompiled = false;
 
             foreach (var rule in Rules.Reverse()) {
-                await rule.Compile(Path);
+                await Task.Run(() => rule.Compile(ModPath));
             }
 
             SetStatus("Ready");
@@ -199,46 +188,46 @@ public class ShellViewModel : ReactiveObject
         ContentDialog dlg = new() {
             Content = new ScrollViewer {
                 MaxHeight = 250,
-            Content = new StackPanel {
+                Content = new StackPanel {
                     Margin = new(0, 0, 15, 0),
-                Spacing = 10,
-                Children = {
-                    new TextBox {
-                        Text = App.Config.UkmmPath,
-                        Watermark = "UKMM Path",
-                        UseFloatingWatermark = true,
-                    },
-                    new TextBox {
-                        Text = App.Config.ModsPath,
-                        Watermark = "Mods Path",
-                        UseFloatingWatermark = true,
-                    },
-                    new TextBox {
-                        Text = App.Config.Game.GamePath,
-                        Watermark = "Game Path",
-                        UseFloatingWatermark = true,
-                    },
-                    new TextBox {
-                        Text = App.Config.Game.UpdatePath,
-                        Watermark = "Update Path",
-                        UseFloatingWatermark = true,
-                    },
-                    new TextBox {
-                        Text = App.Config.Game.DlcPath,
-                        Watermark = "DLC Path (optioanl)",
-                        UseFloatingWatermark = true,
-                    },
-                    new TextBox {
-                        Text = App.Config.Game.GamePathNx,
-                        Watermark = "Game Path NX",
-                        UseFloatingWatermark = true,
-                    },
-                    new TextBox {
-                        Text = App.Config.Game.DlcPathNx,
-                        Watermark = "DLC Path NX (optional)",
-                        UseFloatingWatermark = true,
-                    },
-                }
+                    Spacing = 10,
+                    Children = {
+                        new TextBox {
+                            Text = App.Config.UkmmPath,
+                            Watermark = "UKMM Path",
+                            UseFloatingWatermark = true,
+                        },
+                        new TextBox {
+                            Text = App.Config.ModsPath,
+                            Watermark = "Mods Path",
+                            UseFloatingWatermark = true,
+                        },
+                        new TextBox {
+                            Text = App.Config.Game.GamePath,
+                            Watermark = "Game Path",
+                            UseFloatingWatermark = true,
+                        },
+                        new TextBox {
+                            Text = App.Config.Game.UpdatePath,
+                            Watermark = "Update Path",
+                            UseFloatingWatermark = true,
+                        },
+                        new TextBox {
+                            Text = App.Config.Game.DlcPath,
+                            Watermark = "DLC Path (optioanl)",
+                            UseFloatingWatermark = true,
+                        },
+                        new TextBox {
+                            Text = App.Config.Game.GamePathNx,
+                            Watermark = "Game Path NX",
+                            UseFloatingWatermark = true,
+                        },
+                        new TextBox {
+                            Text = App.Config.Game.DlcPathNx,
+                            Watermark = "DLC Path NX (optional)",
+                            UseFloatingWatermark = true,
+                        },
+                    }
                 }
             },
             DefaultButton = ContentDialogButton.Primary,
@@ -290,7 +279,7 @@ public class ShellViewModel : ReactiveObject
         };
 
         if (SelectedRule != null && await dlg.ShowAsync() == ContentDialogResult.Primary) {
-            SelectedRule.Pattern = "*";
+            Rules[Rules.IndexOf(SelectedRule)] = (Rule)((UserControl)dlg.Content).DataContext!;
         }
     }
 
