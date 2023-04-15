@@ -80,5 +80,5 @@ jobs:
       - uses: actions/upload-artifact@v3
         name: Upload artifacts
         with:
-          name: UKMM-Flash${{ matrix.config.ext }}
+          name: UKMM-Flash-${{ matrix.config.name }}
           path: ${{ matrix.config.name }}/${{ env.proj }}${{ matrix.config.ext }}
