@@ -168,12 +168,29 @@ public class ShellViewModel : ReactiveObject
             DefaultButton = ContentDialogButton.Primary,
             PrimaryButtonText = "Fetch",
             SecondaryButtonText = "Cancel",
-            Title = "Fetch File"
+            Title = "Fetch Files"
         };
 
         ContentDialogResult result = await dlg.ShowAsync();
         if (result == ContentDialogResult.Primary && dlg.Content is TextBox tb && !string.IsNullOrEmpty(tb.Text)) {
-            // fetch tb.Text
+            var fetchResult = GameFiles.Fetch(tb.Text);
+            ContentDialog verifyDlg = new() {
+                Content = new ScrollViewer {
+                    MaxHeight = 150,
+                    Content = new TextBlock {
+                        Text = "Found Files:\n" + string.Join('\n', fetchResult.Select(x => string.Join('\n', x.Value))),
+                        TextWrapping = Avalonia.Media.TextWrapping.Wrap
+                    }
+                },
+                DefaultButton = ContentDialogButton.Primary,
+                PrimaryButtonText = "Continue",
+                SecondaryButtonText = "Cancel",
+                Title = "Fetch Files Result"
+            };
+
+            if (await verifyDlg.ShowAsync() == ContentDialogResult.Primary) {
+                await fetchResult.CopyInto(Path.Combine(ModPath, "build"));
+            }
         }
     }
 
