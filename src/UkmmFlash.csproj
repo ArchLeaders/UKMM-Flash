@@ -34,6 +34,9 @@
     <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\lib\Cead\src\Cead.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Using Include="ReactiveUI" />
   </ItemGroup>
   <ItemGroup>
