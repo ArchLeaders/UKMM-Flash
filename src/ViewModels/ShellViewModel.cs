@@ -133,7 +133,10 @@ public class ShellViewModel : ReactiveObject
     public static async Task OpenSettings()
     {
         ContentDialog dlg = new() {
+            Content = new ScrollViewer {
+                MaxHeight = 250,
             Content = new StackPanel {
+                    Margin = new(0, 0, 15, 0),
                 Spacing = 10,
                 Children = {
                     new TextBox {
@@ -146,6 +149,32 @@ public class ShellViewModel : ReactiveObject
                         Watermark = "Mods Path",
                         UseFloatingWatermark = true,
                     },
+                    new TextBox {
+                        Text = App.Config.Game.GamePath,
+                        Watermark = "Game Path",
+                        UseFloatingWatermark = true,
+                    },
+                    new TextBox {
+                        Text = App.Config.Game.UpdatePath,
+                        Watermark = "Update Path",
+                        UseFloatingWatermark = true,
+                    },
+                    new TextBox {
+                        Text = App.Config.Game.DlcPath,
+                        Watermark = "DLC Path (optioanl)",
+                        UseFloatingWatermark = true,
+                    },
+                    new TextBox {
+                        Text = App.Config.Game.GamePathNx,
+                        Watermark = "Game Path NX",
+                        UseFloatingWatermark = true,
+                    },
+                    new TextBox {
+                        Text = App.Config.Game.DlcPathNx,
+                        Watermark = "DLC Path NX (optional)",
+                        UseFloatingWatermark = true,
+                    },
+                }
                 }
             },
             DefaultButton = ContentDialogButton.Primary,
@@ -158,8 +187,16 @@ public class ShellViewModel : ReactiveObject
             var stack = dlg.Content as StackPanel;
             App.Config.UkmmPath = (stack!.Children[0] as TextBox)!.Text!;
             App.Config.ModsPath = (stack!.Children[1] as TextBox)!.Text!;
+
+            App.Config.Game.GamePath = (stack!.Children[2] as TextBox)!.Text!;
+            App.Config.Game.UpdatePath = (stack!.Children[3] as TextBox)!.Text!;
+            App.Config.Game.DlcPath = (stack!.Children[4] as TextBox)!.Text!;
+
+            App.Config.Game.GamePathNx = (stack!.Children[5] as TextBox)!.Text!;
+            App.Config.Game.DlcPathNx = (stack!.Children[6] as TextBox)!.Text!;
+
             Shared.Name = Shared.Name; // reprocess Path
-            await App.Config.Save();
+            App.Config.Save();
         }
     }
 
