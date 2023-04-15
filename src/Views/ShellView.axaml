@@ -106,7 +106,7 @@
                                            FontFamily="Consolas"
                                            FontSize="9"
                                            Foreground="{DynamicResource SystemFillColorAttentionBrush}"
-                                           Text="{Binding Action.Name}" />
+                                           Text="{Binding Action.Key}" />
                             </StackPanel>
                         </Border>
                     </DataTemplate>

@@ -5,8 +5,6 @@ namespace UkmmFlash.Models.RuleActions;
 
 internal class AampAction : RuleAction
 {
-    public AampAction() : base("Aamp to Yaml") { }
-
     public override void Compile(string path)
     {
         string text = File.ReadAllText(path + ".yml");

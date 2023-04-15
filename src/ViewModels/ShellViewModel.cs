@@ -11,7 +11,14 @@ public class ShellViewModel : ReactiveObject
 {
     public static ShellViewModel Shared { get; } = new();
 
-    private string _name = Path.GetFileName(Directory.GetCurrentDirectory());
+    public ShellViewModel()
+    {
+        _modPath = Directory.GetCurrentDirectory();
+        _name = Path.GetFileName(_modPath);
+        Rules.Load(_modPath);
+    }
+
+    private string _name;
     public string Name {
         get => _name;
         set {
@@ -20,7 +27,7 @@ public class ShellViewModel : ReactiveObject
         }
     }
 
-    private string _modPath = Directory.GetCurrentDirectory();
+    private string _modPath;
     public string ModPath {
         get => _modPath;
         set => this.RaiseAndSetIfChanged(ref _modPath, value);
@@ -59,6 +66,7 @@ public class ShellViewModel : ReactiveObject
             Directory.CreateDirectory(Path.Combine(ModPath, "scripts"));
 
             Meta.GetMetaFile(ModPath, Name, Platform.WiiU);
+            Rules.Load(ModPath);
         }
     }
 
@@ -67,6 +75,7 @@ public class ShellViewModel : ReactiveObject
         BrowserDialog dialog = new(BrowserMode.OpenFolder, "Open Mod Root Folder", instanceBrowserKey: "OpenModDialog");
         if (await dialog.ShowDialog() is string path && Directory.Exists(path)) {
             Name = Path.GetFileName(path);
+            Rules.Load(ModPath);
         }
     }
 
@@ -265,6 +274,7 @@ public class ShellViewModel : ReactiveObject
 
         if (await dlg.ShowAsync() == ContentDialogResult.Primary) {
             Rules.Add((Rule)((UserControl)dlg.Content).DataContext!);
+            await Rules.Save(ModPath);
         }
     }
 
@@ -280,6 +290,7 @@ public class ShellViewModel : ReactiveObject
 
         if (SelectedRule != null && await dlg.ShowAsync() == ContentDialogResult.Primary) {
             Rules[Rules.IndexOf(SelectedRule)] = (Rule)((UserControl)dlg.Content).DataContext!;
+            await Rules.Save(ModPath);
         }
     }
 
@@ -295,6 +306,7 @@ public class ShellViewModel : ReactiveObject
 
         if (SelectedRule != null && await dlg.ShowAsync() == ContentDialogResult.Primary) {
             Rules.Remove(SelectedRule);
+            await Rules.Save(ModPath);
         }
     }
 
@@ -310,10 +322,11 @@ public class ShellViewModel : ReactiveObject
 
         if (await dlg.ShowAsync() == ContentDialogResult.Primary) {
             Rules.Clear();
+            await Rules.Save(ModPath);
         }
     }
 
-    public void MoveRuleUp()
+    public async Task MoveRuleUp()
     {
         if (SelectedRule != null) {
             int index = Rules.IndexOf(SelectedRule);
@@ -322,9 +335,11 @@ public class ShellViewModel : ReactiveObject
                 SelectedRule = Rules[index - 1];
             }
         }
+
+        await Rules.Save(ModPath);
     }
 
-    public void MoveRuleDown()
+    public async Task MoveRuleDown()
     {
         if (SelectedRule != null) {
             int index = Rules.IndexOf(SelectedRule);
@@ -333,6 +348,8 @@ public class ShellViewModel : ReactiveObject
                 SelectedRule = Rules[index + 1];
             }
         }
+
+        await Rules.Save(ModPath);
     }
 
     private bool _isLoading = false;

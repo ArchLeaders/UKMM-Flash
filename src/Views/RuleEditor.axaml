@@ -12,7 +12,13 @@
                  UseFloatingWatermark="True"
                  Watermark="Pattern" />
         <ComboBox HorizontalAlignment="Stretch"
-                  Items="{Binding Library}"
-                  SelectedItem="{Binding Action}" />
+                  ItemsSource="{Binding Library}"
+                  SelectedItem="{Binding Action}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Key}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
     </StackPanel>
 </UserControl>

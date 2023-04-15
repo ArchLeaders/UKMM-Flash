@@ -5,10 +5,10 @@ namespace UkmmFlash.Models;
 
 public class Rule : ReactiveObject
 {
-    public static RuleAction[] Library { get; } = {
-        new AampAction(),
-        new BymlAction(),
-        new SarcAction(),
+    public static Dictionary<string, RuleAction> Library { get; } = new() {
+        { "Aamp to Yaml", new AampAction() },
+        { "Byml to Yaml", new BymlAction() },
+        { "Sarc to Folder", new SarcAction() },
     };
 
     private string _pattern;
@@ -17,8 +17,8 @@ public class Rule : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _pattern, value);
     }
 
-    private RuleAction _action;
-    public RuleAction Action {
+    private KeyValuePair<string, RuleAction> _action;
+    public KeyValuePair<string, RuleAction> Action {
         get => _action;
         set => this.RaiseAndSetIfChanged(ref _action, value);
     }
@@ -26,14 +26,14 @@ public class Rule : ReactiveObject
     public void Compile(string path)
     {
         foreach (var file in GetMatches(path)) {
-            Action.Compile(file);
+            Action.Value.Compile(file);
         }
     }
 
     public void Decompile(string path)
     {
         foreach (var file in GetMatches(path)) {
-            Action.Decompile(file);
+            Action.Value.Decompile(file);
         }
     }
 
@@ -44,9 +44,15 @@ public class Rule : ReactiveObject
         return matcher.GetResultsInFullPath(path);
     }
 
-    public Rule(string pattern, RuleAction action)
+    public Rule(string pattern, KeyValuePair<string, RuleAction> action)
     {
         _pattern = pattern;
         _action = action;
+    }
+
+    public Rule(string pattern, string action)
+    {
+        _pattern = pattern;
+        _action = new(action, Library[action]);
     }
 }

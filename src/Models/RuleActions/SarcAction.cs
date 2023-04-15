@@ -4,8 +4,6 @@ namespace UkmmFlash.Models.RuleActions;
 
 public class SarcAction : RuleAction
 {
-    public SarcAction() : base("Sarc to Folder") { }
-
     public override void Compile(string path)
     {
         var dirPath = path + ".dir";

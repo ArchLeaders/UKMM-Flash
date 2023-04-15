@@ -8,6 +8,6 @@ public partial class RuleEditor : UserControl
     public RuleEditor(Rule? rule = null)
     {
         InitializeComponent();
-        DataContext = new Rule(rule?.Pattern ?? string.Empty, rule?.Action ?? new SarcAction());
+        DataContext = new Rule(rule?.Pattern ?? string.Empty, rule?.Action ?? Rule.Library.ElementAt(0));
     }
 }

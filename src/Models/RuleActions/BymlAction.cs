@@ -5,8 +5,6 @@ namespace UkmmFlash.Models.RuleActions;
 
 public class BymlAction : RuleAction
 {
-    public BymlAction() : base("Byml to Yaml") { }
-
     public override void Compile(string path)
     {
         string text = File.ReadAllText(path + ".yml");
