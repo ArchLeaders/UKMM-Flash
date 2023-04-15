@@ -11,6 +11,8 @@
         <TextBox Text="{Binding Pattern}"
                  UseFloatingWatermark="True"
                  Watermark="Pattern" />
-        <ComboBox HorizontalAlignment="Stretch" SelectedItem="{Binding Action}" />
+        <ComboBox HorizontalAlignment="Stretch"
+                  Items="{Binding Library}"
+                  SelectedItem="{Binding Action}" />
     </StackPanel>
 </UserControl>

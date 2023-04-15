@@ -1,9 +1,15 @@
 ﻿using Microsoft.Extensions.FileSystemGlobbing;
+using UkmmFlash.Models.RuleActions;
 
 namespace UkmmFlash.Models;
 
 public class Rule : ReactiveObject
 {
+    public static RuleAction[] Library { get; } = {
+        new AampAction(),
+        new BymlAction(),
+        new SarcAction(),
+    };
 
     private string _pattern;
     public string Pattern {
@@ -11,26 +17,23 @@ public class Rule : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _pattern, value);
     }
 
-
     private RuleAction _action;
     public RuleAction Action {
         get => _action;
         set => this.RaiseAndSetIfChanged(ref _action, value);
     }
 
-    public async Task Compile(string path)
+    public void Compile(string path)
     {
-        // for match in rule => Action.Compile(path);
         foreach (var file in GetMatches(path)) {
-            await Action.Compile(file);
+            Action.Compile(file);
         }
     }
 
-    public async Task Decompile(string path)
+    public void Decompile(string path)
     {
-        // for match in rule => Action.Decompile(path);
         foreach (var file in GetMatches(path)) {
-            await Action.Decompile(file);
+            Action.Decompile(file);
         }
     }
 
@@ -45,10 +48,5 @@ public class Rule : ReactiveObject
     {
         _pattern = pattern;
         _action = action;
-    }
-
-    public static Rule Create<T>(string pattern) where T : RuleAction, new()
-    {
-        return new(pattern, new T());
     }
 }
