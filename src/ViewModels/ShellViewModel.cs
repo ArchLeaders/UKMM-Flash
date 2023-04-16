@@ -223,7 +223,7 @@ public class ShellViewModel : ReactiveObject
                         },
                         new TextBox {
                             Text = App.Config.Game.DlcPath,
-                            Watermark = "DLC Path (optioanl)",
+                            Watermark = "DLC Path",
                             UseFloatingWatermark = true,
                         },
                         new TextBox {
@@ -233,7 +233,7 @@ public class ShellViewModel : ReactiveObject
                         },
                         new TextBox {
                             Text = App.Config.Game.DlcPathNx,
-                            Watermark = "DLC Path NX (optional)",
+                            Watermark = "DLC Path NX",
                             UseFloatingWatermark = true,
                         },
                     }
