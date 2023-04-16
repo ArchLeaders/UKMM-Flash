@@ -157,7 +157,7 @@ public class ShellViewModel : ReactiveObject
         SetStatus("Ready");
     }
 
-    public async Task FetchFile()
+    public async Task FetchFiles()
     {
         ContentDialog dlg = new() {
             Content = new TextBox {

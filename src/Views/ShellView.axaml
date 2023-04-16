@@ -44,8 +44,8 @@
                         IsEnabled="{Binding !IsLoading}" />
                 <Border Height="1" Background="{DynamicResource ControlStrokeColorOnAccentDefault}" />
                 <Button HorizontalAlignment="Stretch"
-                        Command="{Binding FetchFile}"
-                        Content="Fetch File"
+                        Command="{Binding FetchFiles}"
+                        Content="Fetch Files"
                         IsEnabled="{Binding !IsLoading}" />
             </StackPanel>
             <StackPanel Grid.Row="1" Spacing="10">
