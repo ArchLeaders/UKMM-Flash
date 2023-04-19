@@ -98,7 +98,7 @@
                                 DoubleTapped="RuleItem_DoubleTapped"
                                 ToolTip.Tip="{Binding Pattern}">
                             <Grid ColumnDefinitions="*,Auto">
-                                <StackPanel>
+                                <StackPanel VerticalAlignment="Center">
                                     <TextBlock HorizontalAlignment="Left"
                                                FontFamily="Consolas"
                                                FontSize="11"
@@ -109,7 +109,11 @@
                                                Foreground="{DynamicResource SystemFillColorAttentionBrush}"
                                                Text="{Binding Action.Key}" />
                                 </StackPanel>
-                                <CheckBox Grid.Column="1" IsChecked="{Binding IsEnabled}" />
+                                <CheckBox Grid.Column="1"
+                                          Margin="-5"
+                                          Padding="1,0"
+                                          IsChecked="{Binding IsEnabled}"
+                                          Opacity="1" />
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -120,7 +124,7 @@
                         <Setter Property="CornerRadius" Value="3" />
                         <Setter Property="Margin" Value="0" />
                         <Setter Property="Padding" Value="0" />
-                        <Setter Property="Opacity" Value="0.6" />
+                        <Setter Property="Opacity" Value="1" />
                     </Style>
                 </ListBox.Styles>
             </ListBox>
