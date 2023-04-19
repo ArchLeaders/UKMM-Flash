@@ -2,14 +2,20 @@
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
-Mod processing tool for a smoother development workflow using U-King Mod Manager
+UKMM Flash is a mod processing tool designed to make mod development quick and easy.
+It uses U-King Mod Manager to quickly process the mod files in the background without any manual interactions.
 
-### Setup
+It works by targeting a mod folder, which you can develop as you usually would. But when time come to test your changes, you just click the "Install & Deploy" button, and viola, your mod is updated in UKMM and deployed to your desired location!
 
-- Download and install the latest [DotNET 7.0 Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/7.0).
-- Download the latest UKMM-Flash [release](https://github.com/ArchLeaders/UKMM-Flash/releases/latest).
-- Run `UkmmFlash.exe` once and procede to fill in your settings
-    - **UKMM Path:** The path to the latest UKMM executable from [GitHub](https://github.com/NiceneNerd/ukmm/releases/)
+Please read the Wiki for full usage instructions and tutorials - https://github.com/ArchLeaders/UKMM-Flash/wiki
+
+**! Notices:**
+- Updates will only be available on GitHub - please download the latest version from there.
+- Linux builds are provided but untested
+
+If you find any issues or want to request a feature, please submit a form on GitHub or leave a comment here (GitHub request a more likely to be read and not forgotten) - https://github.com/ArchLeaders/UKMM-Flash/issues
+
+If you need help with anything, consult the Wiki or contact me in my Discord server (DM's are not preferred - please ask in a help channel)
 
 <br>
 
