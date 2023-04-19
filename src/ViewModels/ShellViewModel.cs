@@ -110,6 +110,13 @@ public class ShellViewModel : ReactiveObject
 
     public async Task Deploy()
     {
+        await Compile();
+
+        SetStatus("Running Deploy Rules");
+        foreach (var rule in Rules.Reverse()) {
+            await Task.Run(() => rule.Action.Value.Deploy(ModPath));
+        }
+
         SetStatus("Setting Game Mode");
         Meta.SetNextVersion(Meta.GetInfoFile(ModPath, Name, Platform.WiiU));
 
