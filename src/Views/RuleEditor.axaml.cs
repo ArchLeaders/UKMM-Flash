@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using UkmmFlash.Models;
-using UkmmFlash.Models.RuleActions;
 
 namespace UkmmFlash.Views;
 public partial class RuleEditor : UserControl
