@@ -1,4 +1,5 @@
 ﻿using Cead;
+using Microsoft.Extensions.FileSystemGlobbing;
 using UkmmFlash.Models.RuleActions;
 
 namespace UkmmFlash.Models;
@@ -13,6 +14,19 @@ public abstract class RuleAction
     public virtual void Compile(string path) { }
     public virtual void Decompile(string path) { }
     public virtual void Deploy(string path) { }
+    public virtual IEnumerable<string> GetMatches(string pattern, string path)
+    {
+        Matcher matcher = new();
+        matcher.AddInclude(pattern);
+        return matcher.GetResultsInFullPath(path);
+    }
+
+    public void Execute(Action<string> action, string pattern, string path)
+    {
+        foreach (var file in GetMatches(pattern, path)) {
+            action(file);
+        }
+    }
 
     private static readonly Dictionary<string, RuleAction> _library = new() {
         { "Aamp to Yaml", new AampAction() },
