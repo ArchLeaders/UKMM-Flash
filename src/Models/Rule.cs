@@ -4,6 +4,13 @@ public class Rule : ReactiveObject
 {
     public static Dictionary<string, RuleAction> Library => RuleAction.GetEnabled();
 
+
+    private bool _isEnabled;
+    public bool IsEnabled {
+        get => _isEnabled;
+        set => this.RaiseAndSetIfChanged(ref _isEnabled, value);
+    }
+
     private string _pattern;
     public string Pattern {
         get => _pattern;

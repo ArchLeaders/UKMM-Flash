@@ -86,7 +86,7 @@ public class ShellViewModel : ReactiveObject
             SetStatus("Decompiling");
             _isDecompiled = true;
 
-            foreach (var rule in Rules) {
+            foreach (var rule in Rules.Where(x => x.IsEnabled)) {
                 await Task.Run(() => rule.Decompile(ModPath));
             }
 
@@ -100,7 +100,7 @@ public class ShellViewModel : ReactiveObject
             SetStatus("Compiling");
             _isDecompiled = false;
 
-            foreach (var rule in Rules.Reverse()) {
+            foreach (var rule in Rules.Where(x => x.IsEnabled).Reverse()) {
                 await Task.Run(() => rule.Compile(ModPath));
             }
 
@@ -113,7 +113,7 @@ public class ShellViewModel : ReactiveObject
         await Compile();
 
         SetStatus("Running Deploy Rules");
-        foreach (var rule in Rules.Reverse()) {
+        foreach (var rule in Rules.Where(x => x.IsEnabled)) {
             await Task.Run(() => rule.Deploy(ModPath));
         }
 

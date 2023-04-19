@@ -97,17 +97,20 @@
                                 Background="Transparent"
                                 DoubleTapped="RuleItem_DoubleTapped"
                                 ToolTip.Tip="{Binding Pattern}">
-                            <StackPanel>
-                                <TextBlock HorizontalAlignment="Left"
-                                           FontFamily="Consolas"
-                                           FontSize="11"
-                                           Text="{Binding Pattern}" />
-                                <TextBlock HorizontalAlignment="Left"
-                                           FontFamily="Consolas"
-                                           FontSize="9"
-                                           Foreground="{DynamicResource SystemFillColorAttentionBrush}"
-                                           Text="{Binding Action.Key}" />
-                            </StackPanel>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <StackPanel>
+                                    <TextBlock HorizontalAlignment="Left"
+                                               FontFamily="Consolas"
+                                               FontSize="11"
+                                               Text="{Binding Pattern}" />
+                                    <TextBlock HorizontalAlignment="Left"
+                                               FontFamily="Consolas"
+                                               FontSize="9"
+                                               Foreground="{DynamicResource SystemFillColorAttentionBrush}"
+                                               Text="{Binding Action.Key}" />
+                                </StackPanel>
+                                <CheckBox Grid.Column="1" IsChecked="{Binding IsEnabled}" />
+                            </Grid>
                         </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
