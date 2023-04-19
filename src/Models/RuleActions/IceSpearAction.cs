@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.FileSystemGlobbing;
 using System.Text.Json;
+using UkmmFlash.ViewModels;
+
 using IceSpearConfig = System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, System.Text.Json.JsonElement>>;
 
 namespace UkmmFlash.Models.RuleActions;
@@ -28,7 +30,21 @@ public sealed class IceSpearAction : RuleAction
 
     public override void Deploy(string path)
     {
+        string outFolder = Path.GetRelativePath(_path!, Path.GetDirectoryName(path)!);
+        outFolder = outFolder[outFolder.IndexOf(Path.DirectorySeparatorChar)..].Remove(0, 1);
 
+        if (!outFolder.StartsWith("field")) {
+            // Probably an unrelated file, we only
+            // want the field files (hopefully)
+            return;
+        }
+
+        outFolder = Path.GetRelativePath(Path.Combine("field", "data"), outFolder);
+        outFolder = Path.Combine(ShellViewModel.Shared.ModPath, "build", "aoc", "0010", "Map", "MainField", outFolder);
+        Directory.CreateDirectory(outFolder);
+
+        string outPath = Path.Combine(outFolder, Path.GetFileName(path));
+        File.Copy(path, outPath, true);
     }
 
     public override IEnumerable<string> GetMatches(string pattern, string _)
