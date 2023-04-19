@@ -5,6 +5,10 @@ namespace UkmmFlash.Models.RuleActions;
 
 public class BymlAction : RuleAction
 {
+    public override string Description { get; } = """
+        Converts each found file to a YAML text file, and then back to BYML when the Compile action runs
+        """;
+
     public override void Compile(string path)
     {
         string text = File.ReadAllText(path + ".yml");

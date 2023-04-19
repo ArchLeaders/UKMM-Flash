@@ -5,6 +5,10 @@ namespace UkmmFlash.Models.RuleActions;
 
 public class SarcAction : RuleAction
 {
+    public override string Description { get; } = """
+        Extracts each found archive to a folder, and then back to an archive when the Compile action runs
+        """;
+
     public override void Compile(string path)
     {
         var dirPath = path + ".dir";
