@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Microsoft.Extensions.FileSystemGlobbing;
+using System.Text.Json;
 using IceSpearConfig = System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, System.Text.Json.JsonElement>>;
 
 namespace UkmmFlash.Models.RuleActions;
@@ -28,5 +29,16 @@ public sealed class IceSpearAction : RuleAction
     public override void Deploy(string path)
     {
 
+    }
+
+    public override IEnumerable<string> GetMatches(string pattern, string _)
+    {
+        if (_path != null) {
+            Matcher matcher = new();
+            matcher.AddInclude(pattern);
+            return matcher.GetResultsInFullPath(_path);
+        }
+
+        throw new InvalidDataException("Invalid path argument: The Ice Spear settings file might be corrupt");
     }
 }
