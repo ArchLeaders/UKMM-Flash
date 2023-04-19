@@ -12,7 +12,7 @@ internal class AampAction : RuleAction
         ParameterIO pio = ParameterIO.FromText(text);
 
         DataHandle handle = pio.ToBinary();
-        if (_isYaz0) {
+        if (_isYaz0.TryGetValue(path, out bool isYaz0) && isYaz0) {
             handle = Yaz0.Compress(handle);
         }
 
@@ -23,7 +23,8 @@ internal class AampAction : RuleAction
     public override void Decompile(string path)
     {
         Span<byte> data = File.ReadAllBytes(path);
-        data = Yaz0.TryDecompress(data, out _isYaz0);
+        data = Yaz0.TryDecompress(data, out bool isYaz0);
+        _isYaz0[path] = isYaz0;
 
         ParameterIO pio = ParameterIO.FromBinary(data);
 

@@ -1,4 +1,5 @@
 ﻿using Cead;
+using Cead.Interop;
 
 namespace UkmmFlash.Models.RuleActions;
 
@@ -13,15 +14,22 @@ public class SarcAction : RuleAction
             sarc.Add(Path.GetRelativePath(dirPath, file).Replace(Path.DirectorySeparatorChar, '/').Replace(".slash", "/"), File.ReadAllBytes(file));
         }
 
+        DataHandle handle = sarc.ToBinary();
+        if (_isYaz0.TryGetValue(path, out bool isYaz0) && isYaz0) {
+            handle = Yaz0.Compress(handle);
+        }
+
         Directory.Delete(dirPath, true);
-        using FileStream fs = File.Create(path);
-        fs.Write(sarc.ToBinary());
+        using FileStream stream = File.Create(path);
+        stream.Write(handle);
     }
 
     public override void Decompile(string path)
     {
         Span<byte> data = File.ReadAllBytes(path);
-        data = Yaz0.TryDecompress(data, out _isYaz0);
+        data = Yaz0.TryDecompress(data, out bool isYaz0);
+        _isYaz0[path] = isYaz0;
+
         Sarc sarc = Sarc.FromBinary(data);
         _endian = sarc.Endian;
 

@@ -12,7 +12,7 @@ public class BymlAction : RuleAction
         Byml byml = Byml.FromText(text);
 
         DataHandle handle = byml.ToBinary(_endian == Endianness.Big);
-        if (_isYaz0) {
+        if (_isYaz0.TryGetValue(path, out bool isYaz0) && isYaz0) {
             handle = Yaz0.Compress(handle);
         }
 
@@ -23,7 +23,8 @@ public class BymlAction : RuleAction
     public override void Decompile(string path)
     {
         Span<byte> data = File.ReadAllBytes(path);
-        data = Yaz0.TryDecompress(data, out _isYaz0);
+        data = Yaz0.TryDecompress(data, out bool isYaz0);
+        _isYaz0[path] = isYaz0;
 
         Byml byml = Byml.FromBinary(data);
         _endian = data[0..2].SequenceEqual("BY"u8) ? Endianness.Big : Endianness.Little;
