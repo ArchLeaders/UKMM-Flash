@@ -16,7 +16,12 @@
                   SelectedItem="{Binding Action}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Key}" />
+                    <TextBlock HorizontalAlignment="Stretch"
+                               VerticalAlignment="Stretch"
+                               Background="Transparent"
+                               IsEnabled="{Binding Value.IsEnabled}"
+                               Text="{Binding Key}"
+                               ToolTip.Tip="{Binding Value.Description}" />
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
