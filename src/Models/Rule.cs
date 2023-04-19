@@ -5,11 +5,7 @@ namespace UkmmFlash.Models;
 
 public class Rule : ReactiveObject
 {
-    public static Dictionary<string, RuleAction> Library { get; } = new() {
-        { "Aamp to Yaml", new AampAction() },
-        { "Byml to Yaml", new BymlAction() },
-        { "Sarc to Folder", new SarcAction() },
-    };
+    public static Dictionary<string, RuleAction> Library => RuleAction.GetEnabled();
 
     private string _pattern;
     public string Pattern {

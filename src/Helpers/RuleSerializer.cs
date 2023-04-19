@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text.Json;
 using UkmmFlash.Models;
 
@@ -15,7 +16,12 @@ public static class RuleSerializer
             using FileStream fs = File.OpenRead(path);
             Dictionary<string, string> ruleset = JsonSerializer.Deserialize<Dictionary<string, string>>(fs)!;
             foreach ((var pattern, var rule) in ruleset) {
-                rules.Add(new(pattern, rule));
+                try {
+                    rules.Add(new(pattern, rule));
+                }
+                catch {
+                    Debug.WriteLine("Unknown or removed rule found, skipping...");
+                }
             }
         }
     }
