@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.FileSystemGlobbing;
-using UkmmFlash.Models.RuleActions;
-
-namespace UkmmFlash.Models;
+﻿namespace UkmmFlash.Models;
 
 public class Rule : ReactiveObject
 {
@@ -21,23 +18,17 @@ public class Rule : ReactiveObject
 
     public void Compile(string path)
     {
-        foreach (var file in GetMatches(path)) {
-            Action.Value.Compile(file);
-        }
+        Action.Value.Execute(Action.Value.Compile, Pattern, path);
     }
 
     public void Decompile(string path)
     {
-        foreach (var file in GetMatches(path)) {
-            Action.Value.Decompile(file);
-        }
+        Action.Value.Execute(Action.Value.Decompile, Pattern, path);
     }
 
-    public IEnumerable<string> GetMatches(string path)
+    public void Deploy(string path)
     {
-        Matcher matcher = new();
-        matcher.AddInclude(Pattern);
-        return matcher.GetResultsInFullPath(path);
+        Action.Value.Execute(Action.Value.Deploy, Pattern, path);
     }
 
     public Rule(string pattern, KeyValuePair<string, RuleAction> action)
