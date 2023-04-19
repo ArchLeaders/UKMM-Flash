@@ -4,8 +4,7 @@ public class Rule : ReactiveObject
 {
     public static Dictionary<string, RuleAction> Library => RuleAction.GetEnabled();
 
-
-    private bool _isEnabled;
+    private bool _isEnabled = true;
     public bool IsEnabled {
         get => _isEnabled;
         set => this.RaiseAndSetIfChanged(ref _isEnabled, value);
