@@ -114,7 +114,7 @@ public class ShellViewModel : ReactiveObject
 
         SetStatus("Running Deploy Rules");
         foreach (var rule in Rules.Reverse()) {
-            await Task.Run(() => rule.Action.Value.Deploy(ModPath));
+            await Task.Run(() => rule.Deploy(ModPath));
         }
 
         SetStatus("Setting Game Mode");
